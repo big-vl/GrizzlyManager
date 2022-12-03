@@ -1,5 +1,5 @@
 # Grizzly Manager - Cura plugin
-
+![Grizzly Manager](https://github.com/big-vl/GrizzlyManager/raw/master/GrizzlyManager.png)
 ## Установка
 Как установить плагин:
 Linux: \
