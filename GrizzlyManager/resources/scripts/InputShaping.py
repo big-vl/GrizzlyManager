@@ -45,15 +45,6 @@ class InputShaping(Script):
                     "maximum_value": 1,
                     "maximum_value_warning": 1
                 },
-                "jerk": {
-                    "label": "E max jerk (units/s)",
-                    "description": "E max jerk (units/s)",
-                    "type": "float",
-                    "default_value": 0.3,
-                    "minimum_value": 0,
-                    "maximum_value": 1.3,
-                    "maximum_value_warning": 1.3
-                },
                 "changelayeroffset": {
                     "label": "Change Layer Offset",
                     "description": "If the print has a base, indicate the number of layers from which to start the changes.",
@@ -63,14 +54,24 @@ class InputShaping(Script):
             }
         }"""
 
+                # "jerk": {
+                    # "label": "E max jerk (units/s)",
+                    # "description": "E max jerk (units/s)",
+                    # "type": "float",
+                    # "default_value": 0.3,
+                    # "minimum_value": 0,
+                    # "maximum_value": 1.3,
+                    # "maximum_value_warning": 1.3
+                # },
+
     def execute(self, data):
         setacceleration = int(self.getSettingValueByKey("setacceleration"))
         zeta = float(self.getSettingValueByKey("zeta"))
         changelayeroffset = int(self.getSettingValueByKey("changelayeroffset"))
-        jerk = int(self.getSettingValueByKey("jerk"))
+        # jerk = int(self.getSettingValueByKey("jerk"))
         _default_acceleration = 1500
         _curent_layer = 0
-        _zeta = 0.10
+        _zeta = 0.00
         _step = 0
         for layer in data:
             layer_index = data.index(layer)
@@ -78,19 +79,27 @@ class InputShaping(Script):
             for line in lines:
                 line_index = lines.index(line)
                 if line.startswith(";LAYER:"):
-                    if _curent_layer == 0:
-                        lines.insert(line_index + 1, "M205 J%s;" % (round(jerk, 2)))
+                    # if _curent_layer == 0:
+                        # lines.insert(line_index + 1, "M205 D%s;" % (round(jerk, 2)))
                     if _curent_layer == _step:
                         if _default_acceleration < 7000:
                             lines.insert(
-                                line_index + 1, "M204 P%s;" % (_default_acceleration)
+                                line_index + 1, "M204 S%s" % (_default_acceleration)
+                            )
+                            lines.insert(
+                                line_index + 1, "M204 P%s" % (_default_acceleration)
                             )
                             _default_acceleration = (
                                 _default_acceleration + setacceleration
                             )
-                        if _zeta < 1:
+                        if _zeta == 0.00:
                             lines.insert(
-                                line_index + 2, "M593 D%s;" % (round(_zeta, 2))
+                                line_index + 2, "M593 D%s" % (round(0.01, 2))
+                            )
+                            _zeta += zeta
+                        elif _zeta < 1.00:
+                            lines.insert(
+                                line_index + 2, "M593 D%s" % (round(_zeta, 2))
                             )
                             _zeta += zeta
                         _step += changelayeroffset
