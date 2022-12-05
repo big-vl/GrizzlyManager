@@ -33,3 +33,6 @@
 - Скачайте плагин и разархивируйте его.
 - Переместите всю папку в папку плагинов.
 - Перезагрузите Cura
+
+### Бонусы:
+[![Подставка для кубика](https://img.youtube.com/vi/rGCNgz-JkqQ/maxresdefault.jpg)](https://www.youtube.com/embed/rGCNgz-JkqQ)
