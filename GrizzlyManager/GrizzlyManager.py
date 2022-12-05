@@ -100,7 +100,10 @@ class GrizzlyManager(QObject, Extension):
             self.addCalibrationTempTower260_230,
         )
         self.addMenuItem("", lambda: None)
-
+        self.addMenuItem(
+            catalog.i18nc("@item:inmenu", "Add a Cube holder"),
+            self.addCubeHolder,
+        )
         self.addMenuItem(
             catalog.i18nc("@item:inmenu", "Add a Grizzly Bear"), self.addGrizzlyBear
         )
@@ -303,8 +306,12 @@ class GrizzlyManager(QObject, Extension):
             # Define bottom_layers: False
             global_container_stack.setProperty("bottom_layers", "value", val)
 
-    def addGrizzlyBear(self) -> None:
+    def addCubeHolder(self) -> None:
         self.checkUpdateVersion()
+        self._registerShapeStl("XYZ_Base")
+        self._registerShapeStl("XYZ_Pole")
+
+    def addGrizzlyBear(self) -> None:
         self._registerShapeStl("GrizzlyBear")
         self.checkUpdateVersion()
 
