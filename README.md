@@ -52,7 +52,7 @@
 ![Секция 1 для калибровки](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step4_one_section.jpg)
 Здесь выбираем ту секцию которая самая лучшая, т.е. максимально не имеет эхо, считаем снизу и видим что это снизу 4тая секция, при установке добавления параметра `Start Freq` - 0 и `Step delta freq` - 5 то это 35Hz на оси Y, переварачиваем на X и смотрим что писать в X.
 5. Идем в принтер и вводим параметры `X frequency` и `Y frequency`
-![Секция 1 для калибровки](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step_5_insert_settings.jpg)
+![Секция 1 для калибровки](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step5_insert_settings.jpg)
 **ВНИМАНИЕ НА КАЖДЫЙ ПРИНТЕР И НАТЯЖКУ РЕМНЕЙ СВОИ ПАРАМЕТРЫ!** \
 **Вы спросите почему у меня на моделе одни параметры, а в принтере другие поставил?**
 Потому что я перетягивал ремни по новой.
