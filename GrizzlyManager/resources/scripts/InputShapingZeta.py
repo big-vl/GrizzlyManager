@@ -57,9 +57,9 @@ class InputShapingZeta(Script):
                     "maximum_value": 1,
                     "maximum_value_warning": 1
                 },
-                "changelayeroffset": {
-                    "label": "Change Layer Offset",
-                    "description": "If the print has a base, indicate the number of layers from which to start the changes.",
+                "step_height": {
+                    "label": "Step height",
+                    "description": "Step height",
                     "type": "int",
                     "default_value": 50
                 }
@@ -87,7 +87,7 @@ class InputShapingZeta(Script):
         setacceleration = int(self.getSettingValueByKey("setacceleration"))
         ratio_options = self.getSettingValueByKey("ratio_options")
         zeta = round(float(self.getSettingValueByKey("zeta")), 2)
-        changelayeroffset = int(self.getSettingValueByKey("changelayeroffset"))
+        step_height = int(self.getSettingValueByKey("step_height"))
         _curent_layer = 0
         _zeta = 0.00
         _step = 0
@@ -109,7 +109,7 @@ class InputShapingZeta(Script):
                         _zeta = round(_zeta, 2)
                         self._set_damping_ratio(ratio_options, lines, line_index, _zeta)
                         _zeta += zeta
-                        _step += changelayeroffset
+                        _step += step_height
                     _curent_layer += 1
             result = "\n".join(lines)
             data[layer_index] = result
