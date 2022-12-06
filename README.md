@@ -57,7 +57,7 @@
 **Вы спросите почему у меня на моделе одни параметры, а в принтере другие поставил?**
 Потому что я перетягивал ремни по новой.
 6. Теперь как мы определились с частотой идем далее, добавляем второй скрипт и изменяем первый, например правильное значение вы выбрали 35 то указываем его в скрипте `Input Shaping While` с параметром чуть ниже и шагом 1 для калибровки. В скрипте `Input Shaping Zeta` указываем опять слои для секции `Step height`, в параметр `Set Shaping Zeta Testing at step` указываем значение для Zeta\Damping ratio с каким шагом будет происходить изменение этого параметра. Отправляем на печать.
-![Изменяем параметры Input Shaping While](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step_6_change_settings.jpg)
+![Изменяем параметры Input Shaping While](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step6_change_settings.jpg)
 ![Изменяем параметры Input Shaping While](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step6_add_zeta.png)
 7. Смотрим вторую часть модели. Например у вас в `Input Shaping Zeta` стоит шаг в 0.5 то правильная секция в моделе будет 4тая с параметром 0.2 для параметра `* damping` (* - для X или Y)  
 ![Изменяем параметры Input Shaping While](https://github.com/big-vl/GrizzlyManager/raw/dev/images/step7_select_zeta.jpg)
