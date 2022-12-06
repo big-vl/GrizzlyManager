@@ -162,6 +162,42 @@ class GrizzlyManager(QObject, Extension):
     # ----------------------------------------------------------
     # Check material_linear_advance_enable must be False
     # ----------------------------------------------------------
+    def _checkAccelerationEnabled(self, val):
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        extruder_stack = (
+            CuraApplication.getInstance()
+            .getExtruderManager()
+            .getActiveExtruderStacks()[0]
+        )
+        if global_container_stack.getProperty(
+            "acceleration_enabled", "value"
+        ):
+            key = "acceleration_enabled"
+            definition_key = key + " label"
+            untranslated_label = extruder_stack.getProperty(key, "label")
+            translated_label = i18n_catalog.i18nc(definition_key, untranslated_label)
+            title = catalog.i18nc("@info:title", "Warning ! GrizzlyManager:")
+            if self.Major == 4 and self.Minor < 11:
+                Message(
+                    title=title,
+                    text="! Modification ! in the current profile of : %s \nNew value: %s"
+                    % (translated_label, str(val)),
+                ).show()
+            else:
+                Message(
+                    title=title,
+                    text="! Modification ! in the current profile of : %s \nNew value: %s"
+                    % (translated_label, str(val)),
+                    message_type=Message.MessageType.WARNING,
+                ).show()
+            # Define material_linear_advance_enable: False
+            global_container_stack.setProperty(
+                "acceleration_enabled", "value", val
+            )
+
+    # ----------------------------------------------------------
+    # Check material_linear_advance_enable must be False
+    # ----------------------------------------------------------
     def _checkLinearAdvance(self, val):
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         extruder_stack = (
@@ -325,6 +361,7 @@ class GrizzlyManager(QObject, Extension):
 
     def addRingingTower(self) -> None:
         self._registerShapeStl("RingingTower")
+        self._checkAccelerationEnabled(False)
         self._checkLinearAdvance(False)
         self._checkMagicSpiralize(True)
         self._checkAdaptativ(False)

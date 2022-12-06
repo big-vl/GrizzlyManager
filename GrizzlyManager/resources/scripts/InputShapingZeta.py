@@ -19,22 +19,34 @@ from UM.Logger import Logger
 __version__ = "1.0"
 
 
-class InputShaping(Script):
+class InputShapingZeta(Script):
     def __init__(self):
         super().__init__()
 
     def getSettingDataString(self):
         return """{
-            "name": "Input Shaping",
-            "key": "InputShaping",
+            "name": "Input Shaping Zeta",
+            "key": "InputShapingZeta",
             "metadata": {},
             "version": 2,
             "settings": {
                 "setacceleration": {
-                    "label": "Set Acceleration at step",
-                    "description": "Set Acceleration at step, start: 2000",
+                    "label": "Set Acceleration",
+                    "description": "Set Acceleration",
                     "type": "int",
-                    "default_value": 500
+                    "default_value": 500,
+                    "maximum_value_warning": 7000
+                },
+                "ratio_options": {
+                    "label": "Damping ratio (Zeta) at",
+                    "description": "Damping ratio (Zeta) at",
+                    "type": "enum",
+                    "options": {
+                        "ALL": "All",
+                        "Y": "Y",
+                        "X": "X"
+                    },
+                    "default_value": "ALL"
                 },
                 "zeta": {
                     "label": "Set Shaping Zeta Testing at step",
@@ -54,22 +66,28 @@ class InputShaping(Script):
             }
         }"""
 
-                # "jerk": {
-                    # "label": "E max jerk (units/s)",
-                    # "description": "E max jerk (units/s)",
-                    # "type": "float",
-                    # "default_value": 0.3,
-                    # "minimum_value": 0,
-                    # "maximum_value": 1.3,
-                    # "maximum_value_warning": 1.3
-                # },
+    def _set_damping_ratio(self, ratio_options, list_, index_, val):
+        if val == 0:
+            val = 0.01
+        if val >= 0.01 and val <= 1:
+            if ratio_options == "ALL":
+                list_.insert(
+                    index_, "M593 D%s" % (val)
+                )
+            if ratio_options == "X":
+                list_.insert(
+                    index_, "M593 D%s X" % (val)
+                )
+            if ratio_options == "Y":
+                list_.insert(
+                    index_, "M593 D%s Y" % (val)
+                )
 
     def execute(self, data):
         setacceleration = int(self.getSettingValueByKey("setacceleration"))
-        zeta = float(self.getSettingValueByKey("zeta"))
+        ratio_options = self.getSettingValueByKey("ratio_options")
+        zeta = round(float(self.getSettingValueByKey("zeta")), 2)
         changelayeroffset = int(self.getSettingValueByKey("changelayeroffset"))
-        # jerk = int(self.getSettingValueByKey("jerk"))
-        _default_acceleration = 1500
         _curent_layer = 0
         _zeta = 0.00
         _step = 0
@@ -79,29 +97,18 @@ class InputShaping(Script):
             for line in lines:
                 line_index = lines.index(line)
                 if line.startswith(";LAYER:"):
-                    # if _curent_layer == 0:
-                        # lines.insert(line_index + 1, "M205 D%s;" % (round(jerk, 2)))
+                    if _curent_layer == 0:
+                        if setacceleration > 0 and setacceleration < 7000:
+                            lines.insert(
+                                line_index, "M204 S%s" % (setacceleration)
+                            )
+                            lines.insert(
+                                line_index + 1, "M204 P%s" % (setacceleration)
+                            )
                     if _curent_layer == _step:
-                        if _default_acceleration < 7000:
-                            lines.insert(
-                                line_index + 1, "M204 S%s" % (_default_acceleration)
-                            )
-                            lines.insert(
-                                line_index + 1, "M204 P%s" % (_default_acceleration)
-                            )
-                            _default_acceleration = (
-                                _default_acceleration + setacceleration
-                            )
-                        if _zeta == 0.00:
-                            lines.insert(
-                                line_index + 2, "M593 D%s" % (round(0.01, 2))
-                            )
-                            _zeta += zeta
-                        elif _zeta < 1.00:
-                            lines.insert(
-                                line_index + 2, "M593 D%s" % (round(_zeta, 2))
-                            )
-                            _zeta += zeta
+                        _zeta = round(_zeta, 2)
+                        self._set_damping_ratio(ratio_options, lines, line_index, _zeta)
+                        _zeta += zeta
                         _step += changelayeroffset
                     _curent_layer += 1
             result = "\n".join(lines)
