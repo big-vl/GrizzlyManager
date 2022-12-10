@@ -63,7 +63,12 @@ class GrizzlyManager(QObject, Extension):
     api = CuraApplication.getInstance().getCuraAPI()
 
     def __init__(self, parent=None) -> None:
-        self._file = ["InputShaping.py", "StopPrint.py", "InsertGcodeLayer.py"]
+        self._file = [
+            "InputShapingZeta.py",
+            "InputShapingWhile.py",
+            "StopPrint.py",
+            "InsertGcodeLayer.py"
+        ]
         QObject.__init__(self, parent)
         Extension.__init__(self)
         # set the preferences to store the default value
