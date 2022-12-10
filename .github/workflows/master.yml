@@ -20,7 +20,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release firmware ${{ github.ref }}
+        release_name: Release plugin ${{ github.ref }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
