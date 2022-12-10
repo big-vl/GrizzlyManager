@@ -125,7 +125,7 @@ class GrizzlyManager(QObject, Extension):
             )
             data = requests.get(url, verify=False)
             version = data.text
-            gm_ver = "1.1"
+            gm_ver = "1.0.1"
             if str(version).strip() != gm_ver:
                 title = catalog.i18nc("@info:title", "NEW VERSION ! GrizzlyManager:")
                 text = (
