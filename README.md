@@ -67,5 +67,43 @@
 ![Воздействие Grizzly Manager на профиль](https://github.com/big-vl/GrizzlyManager/raw/dev/images/spiral_true_and_adaptive_false.png)
 ![Воздействие Grizzly Manager на профиль](https://github.com/big-vl/GrizzlyManager/raw/dev/images/linear_advance.png)
 ![Воздействие Grizzly Manager на профиль](https://github.com/big-vl/GrizzlyManager/raw/dev/images/min_time_3.png)
+## Как калибровать в Prusa Slicer на Marline:
+
+Input Shaping частота:
+```
+; Input Shaping Frequency Testing
+{if layer_z==layer_height}M204 P1500; Set Acceleration at Layer 1{endif}
+{if layer_z==5}M204 P2000; Set Acceleration at Layer 5{endif}
+{if layer_z==10}M204 P2500; Set Acceleration at Layer 10{endif}
+{if layer_z==15}M204 P3000; Set Acceleration at Layer 15{endif}
+{if layer_z==20}M204 P3500; Set Acceleration at Layer 20{endif}
+{if layer_z==25}M204 P4000; Set Acceleration at Layer 25{endif}
+{if layer_z==30}M204 P4500; Set Acceleration at Layer 30{endif}
+{if layer_z==35}M204 P5000; Set Acceleration at Layer 35{endif}
+{if layer_z==40}M204 P5500; Set Acceleration at Layer 40{endif}
+{if layer_z==45}M204 P6000; Set Acceleration at Layer 45{endif}
+{if layer_z==50}M204 P6500; Set Acceleration at Layer 50{endif}
+{if layer_z==55}M204 P7000; Set Acceleration at Layer 55{endif}
+```
+
+Input Shaping Zeta:
+```
+; Input Shaping Zeta Testing
+{if layer_z==layer_height}M593 D0.1; Set Input Shaping Zeta at Layer 1{endif}
+{if layer_z==5}M593 D0.15; Set Input Shaping Zeta at Layer 5{endif}
+{if layer_z==10}M593 D0.2; Set Input Shaping Zeta at Layer 10{endif}
+{if layer_z==15}M593 D0.25; Set Input Shaping Zeta at Layer 15{endif}
+{if layer_z==20}M593 D0.3; Set Input Shaping Zeta at Layer 20{endif}
+{if layer_z==25}M593 D0.35; Set Input Shaping Zeta at Layer 25{endif}
+{if layer_z==30}M593 D0.4; Set Input Shaping Zeta at Layer 30{endif}
+{if layer_z==35}M593 D0.5; Set Input Shaping Zeta at Layer 35{endif}
+{if layer_z==40}M593 D0.6; Set Input Shaping Zeta at Layer 40{endif}
+{if layer_z==45}M593 D0.7; Set Input Shaping Zeta at Layer 45{endif}
+{if layer_z==50}M593 D0.8; Set Input Shaping Zeta at Layer 50{endif}
+{if layer_z==55}M593 D0.9; Set Input Shaping Zeta at Layer 55{endif}
+```
+
+Вставьте приведенный выше блок кода в `«Настройки принтера» -> «Пользовательский G-код» -> «G-код перед изменением слоя»`; `"Printer Settings" -> "Custom G-code" -> "Before layer change G-code"` под любым существующим кодом, который у вас может быть.
+Код выполняет изменение с учетом слоя, если слой layer_z равно 5, то устанавливает значение для zeta M593 D0.15;
 ### Бонусы:
 [![Подставка для кубика](https://img.youtube.com/vi/rGCNgz-JkqQ/maxresdefault.jpg)](https://www.youtube.com/embed/rGCNgz-JkqQ)
